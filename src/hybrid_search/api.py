@@ -3,14 +3,22 @@
 from __future__ import annotations
 
 import time
+import asyncio
+import threading
+import uuid
+import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-from fastapi import FastAPI, HTTPException, Query, Response
+from fastapi import FastAPI, HTTPException, Query, Response, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from pydantic import BaseModel, Field
 
-from hybrid_search.config import AppConfig, get_project_root
+from hybrid_search.config import AppConfig, get_project_root, load_config
+from hybrid_search.models.answer import AskRequest
+from hybrid_search.rag.service import RagService
+from hybrid_search.rag.gemini_client import (GenerationError, GenerationTimeout, GenerationNotConfigured, GenerationRateLimited, GenerationModelUnavailable, GenerationInvalidOutput, GenerationBlocked)
 from hybrid_search.evaluation.benchmark import BenchmarkRunner
 from hybrid_search.models.filter import MetadataFilter
 from hybrid_search.retrieval.engine import SearchEngine
@@ -36,6 +44,8 @@ class BenchmarkRequest(BaseModel):
 
 
 _lazy_engine: Optional[SearchEngine] = None
+_lazy_rag_service: Optional[RagService] = None
+_rag_lock = threading.Lock()
 
 
 def get_default_engine() -> SearchEngine:
@@ -46,13 +56,19 @@ def get_default_engine() -> SearchEngine:
     return _lazy_engine
 
 
-def create_app(engine: Optional[SearchEngine] = None) -> FastAPI:
+def create_app(engine: Optional[SearchEngine] = None, config: Optional[AppConfig] = None) -> FastAPI:
     app = FastAPI(
         title="Financial Hybrid Search API",
         description="REST backend for Financial Intelligence Hybrid Search with Qdrant and Neural Reranking",
         version="0.1.0",
     )
 
+    @app.exception_handler(RequestValidationError)
+    async def validation_error_handler(request: Request, exc: RequestValidationError):
+        if request.url.path == "/api/ask":
+            return JSONResponse(status_code=422, content={"error": {"code": "invalid_request", "message": "Invalid ask request.", "request_id": str(uuid.uuid4())}})
+        from fastapi.exception_handlers import request_validation_exception_handler
+        return await request_validation_exception_handler(request, exc)
     # CORS configuration for local browser and cross-origin access
     app.add_middleware(
         CORSMiddleware,
@@ -64,6 +80,17 @@ def create_app(engine: Optional[SearchEngine] = None) -> FastAPI:
 
     def _get_engine() -> SearchEngine:
         return engine if engine is not None else get_default_engine()
+
+    rag_service = None
+    rag_service_lock = threading.Lock()
+
+    def _get_rag_service() -> RagService:
+        nonlocal rag_service
+        if rag_service is None:
+            with rag_service_lock:
+                if rag_service is None:
+                    rag_service = RagService(_get_engine(), config or load_config())
+        return rag_service
 
     @app.get("/favicon.ico", include_in_schema=False)
     async def favicon():
@@ -269,6 +296,34 @@ def create_app(engine: Optional[SearchEngine] = None) -> FastAPI:
             "results": items,
         }
 
+
+    @app.post("/api/ask")
+    async def ask(req: AskRequest) -> Dict[str, Any]:
+        request_id = str(uuid.uuid4())
+        try:
+            response = await _get_rag_service().ask(req)
+            return response.model_dump(mode="json")
+        except ValueError:
+            return JSONResponse(status_code=422, content={"error": {"code": "invalid_request", "message": "Invalid ask request.", "request_id": request_id}})
+        except GenerationError as exc:
+            mapping = {
+                "generation_not_configured": (503, "Gemini API is not configured."),
+                "generation_timeout": (504, "The answer could not be completed in time."),
+                "request_timeout": (504, "The request could not be completed in time."),
+                "generation_rate_limited": (503, "The generation provider is rate limited."),
+                "generation_model_unavailable": (503, "The configured generation model is unavailable."),
+                "generation_invalid_output": (502, "The generation provider returned invalid output."),
+                "generation_blocked": (502, "The provider blocked this response."),
+                "generation_unavailable": (502, "The generation provider is unavailable."),
+            }
+            if exc.code == "generation_invalid_output":
+                logging.getLogger(__name__).warning("Ask generation failed validation: %s (%s)", getattr(exc, "reason", "provider_output"), getattr(exc, "exception_type", "none"))
+            status, message = mapping.get(exc.code, (502, "The generation provider is unavailable."))
+            if status == 503:
+                logging.getLogger(__name__).warning("Ask request unavailable: %s", exc.code)
+            return JSONResponse(status_code=status, content={"error": {"code": exc.code, "message": message, "request_id": request_id}})
+        except Exception:
+            return JSONResponse(status_code=503, content={"error": {"code": "retrieval_unavailable", "message": "Retrieval is temporarily unavailable.", "request_id": request_id}})
     @app.post("/api/benchmark")
     async def run_benchmark(req: BenchmarkRequest) -> Dict[str, Any]:
         """Returns empirical benchmark evaluation matrix with fast validation execution."""

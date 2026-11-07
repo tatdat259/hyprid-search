@@ -1,0 +1,365 @@
+{
+  "total": 17,
+  "correct": 4,
+  "accuracy": 0.23529411764705882,
+  "scope": "Live /api/ask answers; exact numeric criteria for quantitative questions and abstention/citation criteria for other questions.",
+  "rows": [
+    {
+      "id": 1,
+      "query": "What was Apple's Services revenue in fiscal year 2024?",
+      "expected_status": "answered",
+      "http_status": 502,
+      "actual_status": null,
+      "correct": false,
+      "criteria_passed": [],
+      "answer": "",
+      "citation_count": 0,
+      "citations": [],
+      "retrieval": null,
+      "error": {
+        "code": "generation_invalid_output",
+        "message": "The generation provider returned invalid output.",
+        "request_id": "d16fd106-06f2-4e0b-b876-dc959b8b4139"
+      }
+    },
+    {
+      "id": 2,
+      "query": "Summarize NVIDIA's disclosed supply-chain risks.",
+      "expected_status": "answered",
+      "http_status": 502,
+      "actual_status": null,
+      "correct": false,
+      "criteria_passed": [],
+      "answer": "",
+      "citation_count": 0,
+      "citations": [],
+      "retrieval": null,
+      "error": {
+        "code": "generation_invalid_output",
+        "message": "The generation provider returned invalid output.",
+        "request_id": "04aabb72-4c6d-44d2-95c0-7632cb2655c8"
+      }
+    },
+    {
+      "id": 3,
+      "query": "What was Microsoft's cloud revenue growth in fiscal year 2024?",
+      "expected_status": "answered",
+      "http_status": 200,
+      "actual_status": "answered",
+      "correct": true,
+      "criteria_passed": [
+        true,
+        true
+      ],
+      "answer": "In fiscal year 2024, Microsoft Cloud revenue increased by 23% to $137.4 billion. [S3]",
+      "citation_count": 1,
+      "citations": [
+        {
+          "source_id": "S3",
+          "chunk_id": "0000789019_0000950170-24-087843_chunk_0080",
+          "document_id": "0000789019_0000950170-24-087843",
+          "company": "Microsoft Corporation",
+          "ticker": "MSFT",
+          "fiscal_period": "FY2024",
+          "section": "Item 5. Market for Common Equity",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/789019/000095017024087843/msft-20240630.htm"
+        }
+      ],
+      "retrieval": {
+        "method": "rerank",
+        "requested_k": 10,
+        "retrieved_count": 10,
+        "context_count": 4
+      },
+      "error": null
+    },
+    {
+      "id": 4,
+      "query": "What battery supply-chain risks does Tesla disclose?",
+      "expected_status": "answered",
+      "http_status": 502,
+      "actual_status": null,
+      "correct": false,
+      "criteria_passed": [],
+      "answer": "",
+      "citation_count": 0,
+      "citations": [],
+      "retrieval": null,
+      "error": {
+        "code": "generation_invalid_output",
+        "message": "The generation provider returned invalid output.",
+        "request_id": "b9e904a2-1f39-4642-bc5b-1749b756e09a"
+      }
+    },
+    {
+      "id": 5,
+      "query": "What fiscal year does NVIDIA's latest 10-K cover, and when was it filed?",
+      "expected_status": "answered",
+      "http_status": 200,
+      "actual_status": "answered",
+      "correct": false,
+      "criteria_passed": [
+        true,
+        false
+      ],
+      "answer": "NVIDIA's latest 10-K covers fiscal year 2025 [S1]. While the provided sources discuss the content of the FY2025 10-K, they do not explicitly state the specific filing date for the current 2025 report [S1].",
+      "citation_count": 1,
+      "citations": [
+        {
+          "source_id": "S1",
+          "chunk_id": "0001045810_0001045810-25-000023_chunk_0102",
+          "document_id": "0001045810_0001045810-25-000023",
+          "company": "NVIDIA Corporation",
+          "ticker": "NVDA",
+          "fiscal_period": "FY2025",
+          "section": "Item 7. Management's Discussion and Analysis",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000023/nvda-20250126.htm"
+        }
+      ],
+      "retrieval": {
+        "method": "rerank",
+        "requested_k": 10,
+        "retrieved_count": 10,
+        "context_count": 4
+      },
+      "error": null
+    },
+    {
+      "id": 6,
+      "query": "What was Apple's revenue in fiscal year 2023, and when was that report filed?",
+      "expected_status": "answered",
+      "http_status": 200,
+      "actual_status": "insufficient_context",
+      "correct": false,
+      "criteria_passed": [],
+      "answer": "The provided sources do not disclose the total revenue for Apple Inc. in fiscal year 2023.",
+      "citation_count": 0,
+      "citations": [],
+      "retrieval": {
+        "method": "rerank",
+        "requested_k": 10,
+        "retrieved_count": 10,
+        "context_count": 3
+      },
+      "error": null
+    },
+    {
+      "id": 7,
+      "query": "Compare Microsoft's revenue by segment between FY2023 and FY2024.",
+      "expected_status": "answered",
+      "http_status": 200,
+      "actual_status": "insufficient_context",
+      "correct": false,
+      "criteria_passed": [],
+      "answer": "",
+      "citation_count": 0,
+      "citations": [],
+      "retrieval": {
+        "method": "rerank",
+        "requested_k": 10,
+        "retrieved_count": 10,
+        "context_count": 4
+      },
+      "error": null
+    },
+    {
+      "id": 8,
+      "query": "What were NVIDIA's revenue by segment for fiscal 2024 and fiscal 2023?",
+      "expected_status": "answered",
+      "http_status": 200,
+      "actual_status": "insufficient_context",
+      "correct": false,
+      "criteria_passed": [],
+      "answer": "The provided documents do not state the total revenue by reportable segment (Compute & Networking and Graphics) for fiscal years 2024 and 2023; the provided table in source S1 presents operating income by reportable segment, not revenue by segment.",
+      "citation_count": 0,
+      "citations": [],
+      "retrieval": {
+        "method": "rerank",
+        "requested_k": 10,
+        "retrieved_count": 10,
+        "context_count": 4
+      },
+      "error": null
+    },
+    {
+      "id": 9,
+      "query": "What was Tesla's revenue by geographic region in its latest fiscal year?",
+      "expected_status": "answered",
+      "http_status": 200,
+      "actual_status": "insufficient_context",
+      "correct": false,
+      "criteria_passed": [],
+      "answer": "",
+      "citation_count": 0,
+      "citations": [],
+      "retrieval": {
+        "method": "rerank",
+        "requested_k": 10,
+        "retrieved_count": 10,
+        "context_count": 3
+      },
+      "error": null
+    },
+    {
+      "id": 10,
+      "query": "What was VinFast's revenue in fiscal year 2024?",
+      "expected_status": "insufficient_context",
+      "http_status": 200,
+      "actual_status": "insufficient_context",
+      "correct": true,
+      "criteria_passed": [],
+      "answer": "",
+      "citation_count": 0,
+      "citations": [],
+      "retrieval": {
+        "method": "rerank",
+        "requested_k": 10,
+        "retrieved_count": 10,
+        "context_count": 4
+      },
+      "error": null
+    },
+    {
+      "id": 11,
+      "query": "What was Apple's revenue in fiscal year 2019?",
+      "expected_status": "insufficient_context",
+      "http_status": 200,
+      "actual_status": "insufficient_context",
+      "correct": true,
+      "criteria_passed": [],
+      "answer": "",
+      "citation_count": 0,
+      "citations": [],
+      "retrieval": {
+        "method": "rerank",
+        "requested_k": 10,
+        "retrieved_count": 10,
+        "context_count": 4
+      },
+      "error": null
+    },
+    {
+      "id": 12,
+      "query": "Does Tesla operate in Vietnam?",
+      "expected_status": "insufficient_context",
+      "http_status": 200,
+      "actual_status": "insufficient_context",
+      "correct": true,
+      "criteria_passed": [],
+      "answer": "",
+      "citation_count": 0,
+      "citations": [],
+      "retrieval": {
+        "method": "rerank",
+        "requested_k": 10,
+        "retrieved_count": 10,
+        "context_count": 3
+      },
+      "error": null
+    },
+    {
+      "id": 13,
+      "query": "Calculate the combined revenue of Apple and Microsoft in FY2024.",
+      "expected_status": "answered",
+      "http_status": 200,
+      "actual_status": "insufficient_context",
+      "correct": false,
+      "criteria_passed": [],
+      "answer": "There is not enough sourced data with compatible periods and units to calculate this.",
+      "citation_count": 0,
+      "citations": [],
+      "retrieval": {
+        "method": "rerank",
+        "requested_k": 10,
+        "retrieved_count": 10,
+        "context_count": 5
+      },
+      "error": null
+    },
+    {
+      "id": 14,
+      "query": "What is Apple's revenue growth rate from FY2023 to FY2024?",
+      "expected_status": "answered",
+      "http_status": 200,
+      "actual_status": "insufficient_context",
+      "correct": false,
+      "criteria_passed": [],
+      "answer": "There is not enough sourced data with compatible periods and units to calculate this.",
+      "citation_count": 0,
+      "citations": [],
+      "retrieval": {
+        "method": "rerank",
+        "requested_k": 10,
+        "retrieved_count": 10,
+        "context_count": 4
+      },
+      "error": null
+    },
+    {
+      "id": 15,
+      "query": "Calculate NVIDIA's gross margin in FY2024.",
+      "expected_status": "insufficient_context",
+      "http_status": 200,
+      "actual_status": "answered",
+      "correct": false,
+      "criteria_passed": [],
+      "answer": "NVIDIA Corporation's gross margin was 72.7% for fiscal year 2024. [S1]",
+      "citation_count": 1,
+      "citations": [
+        {
+          "source_id": "S1",
+          "chunk_id": "0001045810_0001045810-24-000029_chunk_0101",
+          "document_id": "0001045810_0001045810-24-000029",
+          "company": "NVIDIA Corporation",
+          "ticker": "NVDA",
+          "fiscal_period": "FY2024",
+          "section": "Item 7. Management's Discussion and Analysis",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000029/nvda-20240128.htm"
+        }
+      ],
+      "retrieval": {
+        "method": "rerank",
+        "requested_k": 10,
+        "retrieved_count": 10,
+        "context_count": 3
+      },
+      "error": null
+    },
+    {
+      "id": 16,
+      "query": "Summarize NVIDIA's disclosed risks.",
+      "expected_status": "answered",
+      "http_status": 502,
+      "actual_status": null,
+      "correct": false,
+      "criteria_passed": [],
+      "answer": "",
+      "citation_count": 0,
+      "citations": [],
+      "retrieval": null,
+      "error": {
+        "code": "generation_invalid_output",
+        "message": "The generation provider returned invalid output.",
+        "request_id": "674ab475-0275-424e-badc-96ce064307d0"
+      }
+    },
+    {
+      "id": 17,
+      "query": "What risks does NVIDIA disclose about supply chain?",
+      "expected_status": "answered",
+      "http_status": 502,
+      "actual_status": null,
+      "correct": false,
+      "criteria_passed": [],
+      "answer": "",
+      "citation_count": 0,
+      "citations": [],
+      "retrieval": null,
+      "error": {
+        "code": "generation_invalid_output",
+        "message": "The generation provider returned invalid output.",
+        "request_id": "2b162b37-992a-4199-b92c-dcc54366fa70"
+      }
+    }
+  ]
+}

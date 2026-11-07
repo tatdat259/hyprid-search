@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import time
+from collections.abc import Iterable, Iterator
 from typing import List, Optional
 from qdrant_client import QdrantClient, models
 from rich.progress import (
@@ -76,16 +77,17 @@ class QdrantIndexManager:
                 "dense": models.VectorParams(
                     size=self.dense_vector_size,
                     distance=models.Distance.COSINE,
+                    on_disk=True,
                 )
             },
             sparse_vectors_config={
                 "bm25": models.SparseVectorParams(
                     modifier=models.Modifier.IDF,
-                    index=models.SparseIndexParams(on_disk=False),
+                    index=models.SparseIndexParams(on_disk=True),
                 ),
                 "sparse": models.SparseVectorParams(
                     modifier=models.Modifier.IDF,
-                    index=models.SparseIndexParams(on_disk=False),
+                    index=models.SparseIndexParams(on_disk=True),
                 ),
             },
         )
@@ -112,121 +114,96 @@ class QdrantIndexManager:
 
     def index_chunks(
         self,
-        chunks: List[Chunk],
+        chunks: Iterable[Chunk],
         dense_gen: Optional[DenseEmbeddingGenerator] = None,
         bm25_gen: Optional[BM25EmbeddingGenerator] = None,
         sparse_gen: Optional[SpladeEmbeddingGenerator] = None,
-        batch_size: int = 100,
+        batch_size: Optional[int] = None,
+        total_chunks: Optional[int] = None,
     ) -> int:
-        """Generates embeddings and upserts chunks into Qdrant in streaming batches with real-time progress."""
-        if not chunks:
-            return 0
-
+        """Embed and upsert a chunk iterable while retaining only one batch in memory."""
         self.create_collection(recreate=False)
-        dense_gen = dense_gen or DenseEmbeddingGenerator(self.config.embeddings.dense_model)
-        bm25_gen = bm25_gen or BM25EmbeddingGenerator(self.config.embeddings.bm25_model)
-        sparse_gen = sparse_gen or SpladeEmbeddingGenerator(self.config.embeddings.sparse_model)
+        batch_size = batch_size or self.config.qdrant.upsert_batch_size
+        if batch_size < 1:
+            raise ValueError("batch_size must be at least 1")
 
-        total_chunks = len(chunks)
-        total_batches = (total_chunks + batch_size - 1) // batch_size
-
-        # Check existing indexed points for seamless resumption
-        existing_point_count = 0
-        try:
-            col_info = self.client.get_collection(self.collection_name)
-            existing_point_count = col_info.points_count or 0
-        except Exception:
-            pass
-
-        if existing_point_count > 0:
-            print(f"\n[STREAM-INDEXER] Resuming indexing ({existing_point_count:,} chunks already in Qdrant)...\n", flush=True)
-        else:
-            print(f"\n[STREAM-INDEXER] Starting multi-threaded indexing of {total_chunks:,} chunks across {total_batches} batches (batch size: {batch_size})...\n", flush=True)
+        dense_gen = dense_gen or DenseEmbeddingGenerator(
+            self.config.embeddings.dense_model,
+            batch_size=self.config.embeddings.dense_batch_size,
+            threads=self.config.embeddings.threads,
+        )
+        bm25_gen = bm25_gen or BM25EmbeddingGenerator(
+            self.config.embeddings.bm25_model,
+            batch_size=self.config.embeddings.sparse_batch_size,
+            threads=self.config.embeddings.threads,
+        )
+        sparse_gen = sparse_gen or SpladeEmbeddingGenerator(
+            self.config.embeddings.sparse_model,
+            batch_size=self.config.embeddings.sparse_batch_size,
+            threads=self.config.embeddings.threads,
+        )
 
         total_upserted = 0
         start_all = time.time()
+        print(f"\n[STREAM-INDEXER] Starting indexing (batch size: {batch_size})...\n", flush=True)
 
-        for b_idx in range(total_batches):
-            start_i = b_idx * batch_size
-            end_i = min(start_i + batch_size, total_chunks)
-
-            # Skip batch if already fully indexed in Qdrant
-            if existing_point_count >= end_i:
-                total_upserted += (end_i - start_i)
-                pct = (total_upserted / total_chunks) * 100.0
-                print(f"[INDEXER] Batch {b_idx + 1:2d}/{total_batches} ({pct:5.1f}%): chunks {start_i + 1:4d}..{end_i:4d} [ALREADY INDEXED - SKIPPED]", flush=True)
-                continue
-
-            batch_chunks = chunks[start_i:end_i]
-            batch_texts = [c.text for c in batch_chunks]
-
+        def upsert_batch(batch_chunks: List[Chunk]) -> None:
+            nonlocal total_upserted
             t0 = time.time()
-            # 1. Dense Embeddings
-            dense_embs = dense_gen.embed_texts(batch_texts)
-
-            # 2. BM25 Sparse Embeddings
-            bm25_embs = bm25_gen.embed_texts(batch_texts)
-
-            # 3. SPLADE Sparse Embeddings
-            splade_embs = sparse_gen.embed_texts(batch_texts)
-            t_emb = time.time() - t0
-
-
             points: List[models.PointStruct] = []
-            for i, chunk in enumerate(batch_chunks):
-                chunk.dense_vector = dense_embs[i]
-                chunk.bm25_indices, chunk.bm25_values = bm25_embs[i]
-                chunk.sparse_indices, chunk.sparse_values = splade_embs[i]
-
-                point_id = self.hash_to_int_id(chunk.chunk_id)
-                vector = {
-                    "dense": chunk.dense_vector,
-                    "bm25": models.SparseVector(
-                        indices=chunk.bm25_indices,
-                        values=chunk.bm25_values,
-                    ),
-                    "sparse": models.SparseVector(
-                        indices=chunk.sparse_indices,
-                        values=chunk.sparse_values,
-                    ),
-                }
-                payload = {
-                    "chunk_id": chunk.chunk_id,
-                    "document_id": chunk.document_id,
-                    "company": chunk.company,
-                    "ticker": chunk.ticker,
-                    "cik": chunk.cik,
-                    "document_type": chunk.document_type,
-                    "filing_date": chunk.filing_date,
-                    "fiscal_period": chunk.fiscal_period,
-                    "section": chunk.section,
-                    "sector": chunk.sector,
-                    "geography": chunk.geography,
-                    "text": chunk.text,
-                    "text_hash": chunk.text_hash,
-                    "chunk_index": chunk.chunk_index,
-                    "source_url": chunk.source_url,
-                    "accession_number": chunk.accession_number,
-                }
-                points.append(models.PointStruct(id=point_id, vector=vector, payload=payload))
-
-            # Upsert current batch directly to Qdrant
+            for offset in range(0, len(batch_chunks), self.config.embeddings.dense_batch_size):
+                micro_chunks = batch_chunks[offset:offset + self.config.embeddings.dense_batch_size]
+                texts = [chunk.text for chunk in micro_chunks]
+                dense = dense_gen.embed_texts(texts)
+                bm25 = bm25_gen.embed_texts(texts)
+                sparse = sparse_gen.embed_texts(texts)
+                for i, chunk in enumerate(micro_chunks):
+                    points.append(models.PointStruct(
+                        id=self.hash_to_int_id(chunk.chunk_id),
+                        vector={
+                            "dense": dense[i],
+                            "bm25": models.SparseVector(indices=bm25[i][0], values=bm25[i][1]),
+                            "sparse": models.SparseVector(indices=sparse[i][0], values=sparse[i][1]),
+                        },
+                        payload={
+                            "chunk_id": chunk.chunk_id,
+                            "document_id": chunk.document_id,
+                            "company": chunk.company,
+                            "ticker": chunk.ticker,
+                            "cik": chunk.cik,
+                            "document_type": chunk.document_type,
+                            "filing_date": chunk.filing_date,
+                            "fiscal_period": chunk.fiscal_period,
+                            "section": chunk.section,
+                            "sector": chunk.sector,
+                            "geography": chunk.geography,
+                            "text": chunk.text,
+                            "text_hash": chunk.text_hash,
+                            "chunk_index": chunk.chunk_index,
+                            "source_url": chunk.source_url,
+                            "accession_number": chunk.accession_number,
+                        },
+                    ))
+                del texts, dense, bm25, sparse
             self.client.upsert(collection_name=self.collection_name, points=points)
             total_upserted += len(points)
-
+            del points
             elapsed = time.time() - start_all
-            avg_per_batch = elapsed / (b_idx + 1)
-            remaining_batches = total_batches - (b_idx + 1)
-            eta_mins = (remaining_batches * avg_per_batch) / 60.0
-
-            pct = (total_upserted / total_chunks) * 100.0
+            progress = f"{total_upserted / total_chunks * 100:.1f}%" if total_chunks else f"{total_upserted:,} chunks"
             print(
-                f"[INDEXER] Batch {b_idx + 1:2d}/{total_batches} ({pct:5.1f}%): "
-                f"chunks {start_i + 1:4d}..{end_i:4d} indexed in {t_emb:4.1f}s | "
-                f"Elapsed: {elapsed / 60:.1f}m | ETA: {eta_mins:.1f}m",
+                f"[INDEXER] {total_upserted:,} chunks ({progress}); "
+                f"batch {time.time() - t0:.1f}s, elapsed {elapsed / 60:.1f}m",
                 flush=True,
             )
 
+        batch: List[Chunk] = []
+        for chunk in chunks:
+            batch.append(chunk)
+            if len(batch) == batch_size:
+                upsert_batch(batch)
+                batch.clear()
+        if batch:
+            upsert_batch(batch)
         total_time = time.time() - start_all
         print(f"\n[DONE] Successfully indexed {total_upserted:,} chunks into Qdrant in {total_time / 60:.2f} minutes.\n", flush=True)
         return total_upserted

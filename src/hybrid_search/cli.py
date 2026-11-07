@@ -57,25 +57,27 @@ def handle_index(args: argparse.Namespace) -> None:
         console.print("[bold red]Error: data/processed/documents.jsonl not found. Run 'ingest' first.[/bold red]")
         sys.exit(1)
 
-    documents = []
-    with open(docs_path, "r", encoding="utf-8") as f:
-        for line in f:
-            if line.strip():
-                documents.append(Document.model_validate_json(line))
-
-    console.print(f"[bold cyan]Chunking {len(documents)} documents with contextual metadata...[/bold cyan]")
+    console.print("[bold cyan]Streaming documents into contextualized chunks...[/bold cyan]")
     chunker = DocumentChunker(
         chunk_size_tokens=config.chunking.chunk_size_tokens,
         chunk_overlap_tokens=config.chunking.chunk_overlap_tokens,
     )
     chunks_path = Path("data/processed/chunks.jsonl")
-    chunks = chunker.chunk_documents(documents, output_path=chunks_path)
-    console.print(f"[bold green]Generated {len(chunks)} contextualized chunks.[/bold green]")
 
+    def stream_chunks():
+        chunks_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(docs_path, "r", encoding="utf-8") as documents_file, open(chunks_path, "w", encoding="utf-8") as chunks_file:
+            for line in documents_file:
+                if not line.strip():
+                    continue
+                document = Document.model_validate_json(line)
+                for chunk in chunker.chunk_document(document):
+                    chunks_file.write(chunk.model_dump_json() + "\n")
+                    yield chunk
     console.print(f"[bold cyan]Building Qdrant Index with 3 named vectors (dense, bm25, sparse)...[/bold cyan]")
     manager = QdrantIndexManager(config=config)
     manager.create_collection(recreate=args.recreate)
-    indexed_count = manager.index_chunks(chunks)
+    indexed_count = manager.index_chunks(stream_chunks(), batch_size=config.qdrant.upsert_batch_size)
     console.print(f"[bold green]Successfully indexed {indexed_count} points into Qdrant collection '{config.qdrant.collection_name}'.[/bold green]")
 
 

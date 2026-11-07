@@ -5,8 +5,9 @@ from __future__ import annotations
 import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 import yaml
+from dotenv import load_dotenv
 
 
 class EdgarConfig(BaseModel):
@@ -26,8 +27,9 @@ class EmbeddingsConfig(BaseModel):
     dense_model: str = Field(default="BAAI/bge-small-en-v1.5")
     bm25_model: str = Field(default="Qdrant/bm25")
     sparse_model: str = Field(default="prithivida/Splade_PP_en_v1")
-    dense_batch_size: int = Field(default=64)
-    sparse_batch_size: int = Field(default=32)
+    dense_batch_size: int = Field(default=8)
+    sparse_batch_size: int = Field(default=4)
+    threads: int = Field(default=2)
 
 
 class QdrantConfig(BaseModel):
@@ -51,6 +53,19 @@ class BenchmarkConfig(BaseModel):
     k_values: List[int] = Field(default_factory=lambda: [5, 10, 20])
 
 
+
+class GeminiConfig(BaseModel):
+    api_key: Optional[str] = Field(default=None)
+    model: str = Field(default="gemini-3.8-flash", min_length=1)
+    timeout_seconds: float = Field(default=30.0, gt=0)
+    max_retries: int = Field(default=2, ge=0, le=5)
+
+
+class RagConfig(BaseModel):
+    top_k: int = Field(default=20, ge=1, le=20)
+    max_context_tokens: int = Field(default=8000, ge=256)
+    max_output_tokens: int = Field(default=4096, ge=64)
+    total_timeout_seconds: float = Field(default=45.0, gt=0)
 class CompanyConfig(BaseModel):
     ticker: str
     name: str
@@ -67,6 +82,8 @@ class AppConfig(BaseModel):
     qdrant: QdrantConfig = Field(default_factory=QdrantConfig)
     retrieval: RetrievalConfig = Field(default_factory=RetrievalConfig)
     benchmark: BenchmarkConfig = Field(default_factory=BenchmarkConfig)
+    gemini: GeminiConfig = Field(default_factory=GeminiConfig)
+    rag: RagConfig = Field(default_factory=RagConfig)
     companies: List[CompanyConfig] = Field(default_factory=list)
 
 
@@ -81,6 +98,7 @@ def load_config(
 ) -> AppConfig:
     """Loads and validates configuration from YAML files with environment variable overrides."""
     root = get_project_root()
+    load_dotenv(root / ".env", override=False)
     if config_path is None:
         config_path = root / "config" / "default.yaml"
     else:
@@ -115,4 +133,18 @@ def load_config(
     if "EDGAR_USER_AGENT" in os.environ:
         config_data.setdefault("edgar", {})["user_agent"] = os.environ["EDGAR_USER_AGENT"]
 
+    if "GEMINI_API_KEY" in os.environ:
+        config_data.setdefault("gemini", {})["api_key"] = os.environ["GEMINI_API_KEY"]
+    if "GEMINI_MODEL" in os.environ:
+        config_data.setdefault("gemini", {})["model"] = os.environ["GEMINI_MODEL"]
+    for env_name, section, field, cast in [
+        ("GEMINI_TIMEOUT_SECONDS", "gemini", "timeout_seconds", float),
+        ("GEMINI_MAX_RETRIES", "gemini", "max_retries", int),
+        ("RAG_TOP_K", "rag", "top_k", int),
+        ("RAG_MAX_CONTEXT_TOKENS", "rag", "max_context_tokens", int),
+        ("RAG_MAX_OUTPUT_TOKENS", "rag", "max_output_tokens", int),
+        ("RAG_TOTAL_TIMEOUT_SECONDS", "rag", "total_timeout_seconds", float),
+    ]:
+        if env_name in os.environ:
+            config_data.setdefault(section, {})[field] = cast(os.environ[env_name])
     return AppConfig(**config_data)

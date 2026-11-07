@@ -1,0 +1,619 @@
+{
+  "total": 17,
+  "retrieval_passed": 14,
+  "retrieval_accuracy": 0.8235294117647058,
+  "rows": [
+    {
+      "id": 1,
+      "query": "What was Apple's Services revenue in fiscal year 2024?",
+      "expected_class": "answerable",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [
+        "services",
+        "revenue",
+        "2024"
+      ],
+      "retrieval_pass": true,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2024",
+          "section": "Item 8. Financial Statements and Supplementary Data",
+          "excerpt": "Services (1) -> 2024: $96,169M | 2023: $85,200M | 2022: $78,129M"
+        },
+        {
+          "rank": 2,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2025",
+          "section": "Item 8. Financial Statements and Supplementary Data",
+          "excerpt": "Services (1) -> 2025: $109,158M | 2024: $96,169M | 2023: $85,200M"
+        },
+        {
+          "rank": 3,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2025",
+          "section": "Item 8. Financial Statements and Supplementary Data",
+          "excerpt": "Services (1) -> 2025: $109,158M | 2024: $96,169M | 2023: $85,200M"
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 2,
+      "query": "Summarize NVIDIA's disclosed supply-chain risks.",
+      "expected_class": "answerable",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [
+        "supply",
+        "risk"
+      ],
+      "retrieval_pass": true,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2024",
+          "section": "Item 1A. Risk Factors",
+          "excerpt": "In periods of shortages impacting the semiconductor industry and/or limited supply or capacity in our supply chain, the lead times on our orders may be extended."
+        },
+        {
+          "rank": 2,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2023",
+          "section": "Item 1A. Risk Factors",
+          "excerpt": "We face several risks which have adversely affected or could adversely affect our ability to meet customer demand and scale our supply chain, negatively impact longer-term demand for our products and services, and adversely affect our business operations, gross margin, revenue and/or financial resul"
+        },
+        {
+          "rank": 3,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2025",
+          "section": "Item 1A. Risk Factors",
+          "excerpt": "Economic and industry uncertainty or changes, including recession or slowing growth, inflation, changes or uncertainty in fiscal, monetary, or trade policy, disruptions to capital markets and the banking system, currency fluctuations, higher interest rates, tighter credit, lower capital expenditures"
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 3,
+      "query": "What was Microsoft's cloud revenue growth in fiscal year 2024?",
+      "expected_class": "answerable",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [
+        "cloud",
+        "revenue",
+        "2024"
+      ],
+      "retrieval_pass": true,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "MSFT",
+          "fiscal_year": "FY2024",
+          "section": "Item 5. Market for Common Equity",
+          "excerpt": "In the first quarter of fiscal year 2024, we made updates to the presentation and method of calculation for certain metrics, revising our Microsoft Cloud revenue metric to include revenue growth and expanding our Microsoft 365 Consumer subscribers metric to include Microsoft 365 Basic subscribers, a"
+        },
+        {
+          "rank": 2,
+          "ticker": "MSFT",
+          "fiscal_year": "FY2024",
+          "section": "Item 5. Market for Common Equity",
+          "excerpt": "Intelligent Cloud -> 2024: $105,362M | 2023: $87,907M"
+        },
+        {
+          "rank": 3,
+          "ticker": "MSFT",
+          "fiscal_year": "FY2024",
+          "section": "Item 5. Market for Common Equity",
+          "excerpt": "Microsoft Cloud revenue increased 23% to $137.4 billion."
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 4,
+      "query": "What battery supply-chain risks does Tesla disclose?",
+      "expected_class": "answerable",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [
+        "battery",
+        "supply",
+        "risk"
+      ],
+      "retrieval_pass": true,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "TSLA",
+          "fiscal_year": "FY2023",
+          "section": "Item 5. Market for Common Equity",
+          "excerpt": "As these product lines grow, we will have to maintain adequate battery cell supply for our energy storage products and hire additional personnel, particularly skilled electricians, to support the ramp of Solar Roof."
+        },
+        {
+          "rank": 2,
+          "ticker": "TSLA",
+          "fiscal_year": "FY2024",
+          "section": "Item 1A. Risk Factors",
+          "excerpt": "to a number of uncertainties inherent in all new manufacturing operations, including ongoing compliance with regulatory requirements, procurement and maintenance of construction, environmental and operational licenses and approvals for additional expansion, supply chain constraints, hiring, training"
+        },
+        {
+          "rank": 3,
+          "ticker": "TSLA",
+          "fiscal_year": "FY2025",
+          "section": "Item 1A. Risk Factors",
+          "excerpt": "to a number of uncertainties inherent in all new manufacturing operations, including ongoing compliance with regulatory requirements, procurement and maintenance of construction, environmental and operational licenses and approvals for additional expansion, supply chain constraints, hiring, training"
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 5,
+      "query": "What fiscal year does NVIDIA's latest 10-K cover, and when was it filed?",
+      "expected_class": "answerable",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [
+        "2024",
+        "2025"
+      ],
+      "retrieval_pass": true,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2025",
+          "section": "Item 7. Management's Discussion and Analysis",
+          "excerpt": "A discussion regarding our financial condition and results of operations for fiscal year 2024 compared to fiscal year 2023 can be found under in our Annual Report on Form 10-K for the fiscal year ended January 28, 2024, filed with the SEC on February 21, 2024, which is available free of charge on th"
+        },
+        {
+          "rank": 2,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2023",
+          "section": "Item 7A. Quantitative and Qualitative Disclosures",
+          "excerpt": "If an adverse 10% foreign exchange rate change was applied to our balance sheet hedging contracts, it would have resulted in an adverse impact on income before taxes of approximately $36 million and $41 million as of January 29, 2023 and January 30, 2022, respectively."
+        },
+        {
+          "rank": 3,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2025",
+          "section": "Item 15. Exhibits and Financial Statement Schedules",
+          "excerpt": "33-8238 and 34-47986, Final Rule: Management's Reports on Internal Control Over Financial Reporting and Certification of Disclosure in Exchange Act Periodic Reports, the certifications furnished in Exhibits 32.1 and 32.2 hereto are deemed to accompany this Annual Report on Form 10-K and will not be "
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 6,
+      "query": "What was Apple's revenue in fiscal year 2023, and when was that report filed?",
+      "expected_class": "answerable",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [
+        "revenue",
+        "2023",
+        "2024"
+      ],
+      "retrieval_pass": true,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2023",
+          "section": "Item 8. Financial Statements and Supplementary Data",
+          "excerpt": "We also have audited, in accordance with the standards of the Public Company Accounting Oversight Board (United States) (the \"PCAOB\"), the consolidated balance sheets of Apple Inc. as of September 30, 2023 and September 24, 2022, the related consolidated statements of operations, comprehensive incom"
+        },
+        {
+          "rank": 2,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2023",
+          "section": "Item 8. Financial Statements and Supplementary Data",
+          "excerpt": "The Company's fiscal year 2023 spanned 53 weeks, whereas fiscal years 2022 and 2021 spanned 52 weeks each."
+        },
+        {
+          "rank": 3,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2025",
+          "section": "Item 5. Market for Common Equity",
+          "excerpt": "Discussions of 2023 items and year-to-year comparisons between 2024 and 2023 are not included, and can be found in \"Management's Discussion and Analysis of Financial Condition and Results of Operations\" in , of the Company's Annual Report on Form 10-K for the fiscal year ended September 28, 2024."
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 7,
+      "query": "Compare Microsoft's revenue by segment between FY2023 and FY2024.",
+      "expected_class": "answerable",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [
+        "revenue",
+        "2023",
+        "2024"
+      ],
+      "retrieval_pass": true,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "MSFT",
+          "fiscal_year": "FY2023",
+          "section": "Item 8. Financial Statements and Supplementary Data",
+          "excerpt": "24,732 22,488 Gaming 15,466 16,230 15,370 LinkedIn 15,145 13,816 10,289 Search and news advertising 12,208 11,591 9,267 Enterprise Services 7,722 7,407 6,943 Devices 5,521 7,306 7,143 Dynamics 5,437 4,687 3,754 Other 211 289 373 Total $ 211,915 $ 198,270 $ 168,088 Our Microsoft Cloud revenue, which "
+        },
+        {
+          "rank": 2,
+          "ticker": "MSFT",
+          "fiscal_year": "FY2023",
+          "section": "Item 8. Financial Statements and Supplementary Data",
+          "excerpt": "Office Consumer, including Microsoft 365 Consumer subscriptions, Office licensed on-premises, and other Office services."
+        },
+        {
+          "rank": 3,
+          "ticker": "MSFT",
+          "fiscal_year": "FY2024",
+          "section": "Item 5. Market for Common Equity",
+          "excerpt": "In the first quarter of fiscal year 2024, we made updates to the presentation and method of calculation for certain metrics, revising our Microsoft Cloud revenue metric to include revenue growth and expanding our Microsoft 365 Consumer subscribers metric to include Microsoft 365 Basic subscribers, a"
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 8,
+      "query": "What were NVIDIA's revenue by segment for fiscal 2024 and fiscal 2023?",
+      "expected_class": "answerable",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [
+        "revenue",
+        "2024",
+        "2023"
+      ],
+      "retrieval_pass": true,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2024",
+          "section": "Item 7. Management's Discussion and Analysis",
+          "excerpt": "Revenue from sales to customers outside of the United States accounted for 56% and 69% of total revenue for fiscal years 2024 and 2023, respectively."
+        },
+        {
+          "rank": 2,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2024",
+          "section": "Item 13. Certain Relationships and Related Transactions",
+          "excerpt": "Revenue by geographic areas was as follows: Year Ended Jan 28, 2024 Jan 29, 2023 Jan 30, 2022 Revenue: (In millions) United States $ 26,966 $ 8,292 $ 4,349 Taiwan 13,405 6,986 8,544 China (including Hong Kong) 10,306 5,785 7,111 Other countries 10,245 5,911 6,910 Total revenue $ 60,922 $ 26,974 $ 26"
+        },
+        {
+          "rank": 3,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2025",
+          "section": "Item 7. Management's Discussion and Analysis",
+          "excerpt": "A discussion regarding our financial condition and results of operations for fiscal year 2024 compared to fiscal year 2023 can be found under in our Annual Report on Form 10-K for the fiscal year ended January 28, 2024, filed with the SEC on February 21, 2024, which is available free of charge on th"
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 9,
+      "query": "What was Tesla's revenue by geographic region in its latest fiscal year?",
+      "expected_class": "answerable",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [
+        "revenue",
+        "region"
+      ],
+      "retrieval_pass": true,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "TSLA",
+          "fiscal_year": "FY2024",
+          "section": "Item 1A. Risk Factors",
+          "excerpt": "In addition, the global COVID-19 pandemic has impacted economic markets, manufacturing operations, supply chains, employment and consumer behavior in nearly every geographic region and industry across the world, and we have been, and may in the future be, adversely affected as a result."
+        },
+        {
+          "rank": 2,
+          "ticker": "TSLA",
+          "fiscal_year": "FY2023",
+          "section": "Item 1A. Risk Factors",
+          "excerpt": "In addition, the global COVID-19 pandemic has impacted economic markets, manufacturing operations, supply chains, employment and consumer behavior in nearly every geographic region and industry across the world, and we have been, and may in the future be, adversely affected as a result."
+        },
+        {
+          "rank": 3,
+          "ticker": "TSLA",
+          "fiscal_year": "FY2024",
+          "section": "Item 8. Financial Statements and Supplementary Data",
+          "excerpt": "The following table presents revenues and gross profit by reportable segment (in millions): Year Ended December 31, 2023 2022 2021 Automotive segment Revenues $ 90,738 $ 77,553 $ 51,034 Gross profit $ 16,519 $ 20,565 $ 13,735 Energy generation and storage segment Revenues $ 6,035 $ 3,909 $ 2,789 Gro"
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 10,
+      "query": "What was VinFast's revenue in fiscal year 2024?",
+      "expected_class": "insufficient_context",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [],
+      "retrieval_pass": false,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2024",
+          "section": "Item 8. Financial Statements and Supplementary Data",
+          "excerpt": "The Company's fiscal years 2024 and 2022 spanned 52 weeks each, whereas fiscal year 2023 spanned 53 weeks."
+        },
+        {
+          "rank": 2,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2024",
+          "section": "Item 5. Market for Common Equity",
+          "excerpt": "The Company's fiscal years 2024 and 2022 spanned 52 weeks each, whereas fiscal year 2023 spanned 53 weeks."
+        },
+        {
+          "rank": 3,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2025",
+          "section": "Item 8. Financial Statements and Supplementary Data",
+          "excerpt": "The Company's fiscal years 2025 and 2024 spanned 52 weeks each, whereas fiscal year 2023 spanned 53 weeks."
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 11,
+      "query": "What was Apple's revenue in fiscal year 2019?",
+      "expected_class": "insufficient_context",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [
+        "2019"
+      ],
+      "retrieval_pass": false,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2023",
+          "section": "Item 5. Market for Common Equity",
+          "excerpt": "September 2018 September 2019 September 2020 September 2021 September 2022 September 2023 Apple Inc. $ 100 $ 98 $ 204 $ 269 $ 277 $ 317 S&P 500 Index $ 100 $ 104 $ 118 $ 161 $ 136 $ 160 Dow Jones U.S."
+        },
+        {
+          "rank": 2,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2024",
+          "section": "Item 5. Market for Common Equity",
+          "excerpt": "September 2019 September 2020 September 2021 September 2022 September 2023 September 2024 Apple Inc. $ 100 $ 207 $ 273 $ 281 $ 322 $ 430 S&P 500 Index $ 100 $ 113 $ 156 $ 131 $ 155 $ 210 Dow Jones U.S."
+        },
+        {
+          "rank": 3,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2025",
+          "section": "Item 8. Financial Statements and Supplementary Data",
+          "excerpt": "Total other comprehensive income/(loss) | 1,601 | 4,280 | (343) | Total comprehensive income | 113,611 | 98,016 | 96,652 | See accompanying Notes to Consolidated . Apple Inc. | 2025 Form 10-K | 30 Apple Inc. CONSOLIDATED BALANCE SHEETS"
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 12,
+      "query": "Does Tesla operate in Vietnam?",
+      "expected_class": "insufficient_context",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [],
+      "retrieval_pass": true,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "TSLA",
+          "fiscal_year": "FY2025",
+          "section": "Item 1. Business",
+          "excerpt": "We partner with colleges to integrate Tesla START into automotive and manufacturing classroom locations."
+        },
+        {
+          "rank": 2,
+          "ticker": "TSLA",
+          "fiscal_year": "FY2023",
+          "section": "Item 1A. Risk Factors",
+          "excerpt": "A few states have passed legislation that clarifies our ability to operate, but at the same time limits the number of dealer licenses we can obtain or stores that we can operate."
+        },
+        {
+          "rank": 3,
+          "ticker": "TSLA",
+          "fiscal_year": "FY2023",
+          "section": "Item 1. Business",
+          "excerpt": "For example, we place a high priority on obtaining patents to provide the broadest and strongest possible protection to enable our freedom to operate our innovations and designs within our products and technologies in the electric vehicle market as well as to protect and defend our product portfolio"
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 13,
+      "query": "Calculate the combined revenue of Apple and Microsoft in FY2024.",
+      "expected_class": "answerable",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [
+        "revenue",
+        "2024"
+      ],
+      "retrieval_pass": true,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2024",
+          "section": "Item 8. Financial Statements and Supplementary Data",
+          "excerpt": "Total net sales include $7.7 billion of revenue recognized in 2024 that was included in deferred revenue as of September 30, 2023, $8.2 billion of revenue recognized in 2023 that was included in deferred revenue as of September 24, 2022, and $7.5 billion of revenue recognized in 2022 that was includ"
+        },
+        {
+          "rank": 2,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2024",
+          "section": "Item 8. Financial Statements and Supplementary Data",
+          "excerpt": "Total other comprehensive income/(loss) | 4,280 | (343) | (11,272) | Total comprehensive income | 98,016 | 96,652 | 88,531 | See accompanying Notes to Consolidated . Apple Inc. | 2024 Form 10-K | 30 Apple Inc. CONSOLIDATED BALANCE SHEETS"
+        },
+        {
+          "rank": 3,
+          "ticker": "MSFT",
+          "fiscal_year": "FY2025",
+          "section": "Item 8. Financial Statements and Supplementary Data",
+          "excerpt": "11,927 | (16,389 | ) | 20,773 | Cash and cash equivalents, beginning of period | 18,315 | 34,704 | 13,931 | Cash and cash equivalents, end of period | 30,242 | 18,315 | 34,704 | Refer to accompanying notes. 53"
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 14,
+      "query": "What is Apple's revenue growth rate from FY2023 to FY2024?",
+      "expected_class": "answerable",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [
+        "revenue",
+        "2023",
+        "2024"
+      ],
+      "retrieval_pass": true,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2023",
+          "section": "Item 5. Market for Common Equity",
+          "excerpt": "Change 2022 Change 2021 Research and development $ 29,915 14 % $ 26,251 20 % $ 21,914 Percentage of total net sales 8 % 7 % 6 % Selling, general and administrative $ 24,932 (1) % $ 25,094 14 % $ 21,973 Percentage of total net sales 7 % 6 % 6 % Total operating expenses $ 54,847 7 % $ 51,345 17 % $ 43"
+        },
+        {
+          "rank": 2,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2024",
+          "section": "Item 5. Market for Common Equity",
+          "excerpt": "Form 10-K 24 Provision for Income Taxes Provision for income taxes, effective tax rate and statutory federal income tax rate for 2024, 2023 and 2022 were as follows (dollars in millions): 2024 2023 2022 Provision for income taxes $ 29,749 $ 16,741 $ 19,300 Effective tax rate 24.1 % 14.7 % 16.2 % Sta"
+        },
+        {
+          "rank": 3,
+          "ticker": "AAPL",
+          "fiscal_year": "FY2024",
+          "section": "Item 8. Financial Statements and Supplementary Data",
+          "excerpt": "Effective tax rate 24.1 % 14.7 % 16.2 % Apple Inc."
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 15,
+      "query": "Calculate NVIDIA's gross margin in FY2024.",
+      "expected_class": "insufficient_context",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [
+        "gross margin",
+        "2024"
+      ],
+      "retrieval_pass": false,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2024",
+          "section": "Item 7. Management's Discussion and Analysis",
+          "excerpt": "Gross Profit and Gross Margin Gross profit consists of total revenue, net of allowances, less cost of revenue."
+        },
+        {
+          "rank": 2,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2024",
+          "section": "Item 7. Management's Discussion and Analysis",
+          "excerpt": "The net effect on our gross margin from inventory provisions and sales of items previously written down was an unfavorable impact of 2.7% in fiscal year 2024 and 7.5% in fiscal year 2023."
+        },
+        {
+          "rank": 3,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2024",
+          "section": "Item 1A. Risk Factors",
+          "excerpt": "increased costs for wafers, components, logistics, and other supply chain expenses, which have negatively impacted our gross margin in the past and may do so in the future;"
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 16,
+      "query": "Summarize NVIDIA's disclosed risks.",
+      "expected_class": "answerable",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [
+        "risk"
+      ],
+      "retrieval_pass": true,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2023",
+          "section": "Item 1A. Risk Factors",
+          "excerpt": "Purchasing or owning NVIDIA common stock involves investment risks including, but not limited to, the risks described below."
+        },
+        {
+          "rank": 2,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2025",
+          "section": "Item 1A. Risk Factors",
+          "excerpt": "Increased scrutiny from shareholders, regulators and others regarding our corporate sustainability practices could result in additional costs or risks and adversely impact our reputation and willingness of customers and suppliers to do business with us."
+        },
+        {
+          "rank": 3,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2025",
+          "section": "Item 1A. Risk Factors",
+          "excerpt": "We face additional risks related to acquisitions and strategic investments, including the diversion of capital and other resources, including management's attention; difficulty in realizing a satisfactory return and uncertainties to realize the benefits of an acquisition or strategic investment, if "
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": 17,
+      "query": "What risks does NVIDIA disclose about supply chain?",
+      "expected_class": "answerable",
+      "http_status": 200,
+      "result_count": 10,
+      "term_hits": [
+        "risk",
+        "supply"
+      ],
+      "retrieval_pass": true,
+      "top3": [
+        {
+          "rank": 1,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2024",
+          "section": "Item 1A. Risk Factors",
+          "excerpt": "In periods of shortages impacting the semiconductor industry and/or limited supply or capacity in our supply chain, the lead times on our orders may be extended."
+        },
+        {
+          "rank": 2,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2023",
+          "section": "Item 1A. Risk Factors",
+          "excerpt": "We face several risks which have adversely affected or could adversely affect our ability to meet customer demand and scale our supply chain, negatively impact longer-term demand for our products and services, and adversely affect our business operations, gross margin, revenue and/or financial resul"
+        },
+        {
+          "rank": 3,
+          "ticker": "NVDA",
+          "fiscal_year": "FY2025",
+          "section": "Item 1A. Risk Factors",
+          "excerpt": "We face risks which have adversely affected or could adversely affect our ability to meet customer demand and scale our supply chain, negatively impact longer-term demand for our products and services, and adversely affect our business operations, gross margin, revenue and/or financial results, incl"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "note": "This is evidence/retrieval scoring, not end-to-end generated-answer scoring. /api/ask returned generation_invalid_output in live smoke test."
+}

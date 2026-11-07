@@ -1,0 +1,888 @@
+{
+  "name": "ask_flow_multidimensional_vi_20261106",
+  "description": "25 ca kiểm thử tiếng Việt cho /api/ask: truy xuất, bảng, tính toán, so sánh, suy luận và thiếu dữ liệu.",
+  "scoring_notes": [
+    "So khớp số liệu cho phép dấu chấm hoặc dấu phẩy phân tách hàng nghìn/thập phân như mô tả trong answer_signals.",
+    "Mọi câu answered phải có citation backend hợp lệ; câu insufficient_context không được có citation.",
+    "calc_05 và calc_06 là boundary tests: cả answered có phép tính đúng hoặc insufficient_context do giới hạn tính toán đều được chấp nhận.",
+    "Đáp án chuẩn dùng đơn vị theo filing; không chấm chỉ bằng exact string vì mô hình có thể diễn đạt khác."
+  ],
+  "cases": [
+    {
+      "id": "direct_01",
+      "category": "truy_xuat_truc_tiep",
+      "difficulty": "easy",
+      "question": "Doanh thu Services của Apple trong năm tài chính 2024 là bao nhiêu?",
+      "request": {
+        "query": "Doanh thu Services của Apple trong năm tài chính 2024 là bao nhiêu?",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "AAPL"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "96,169 triệu USD (xấp xỉ 96.169 tỷ USD).",
+      "answer_signals": [
+        [
+          "96.169",
+          "96,169"
+        ],
+        [
+          "triệu",
+          "tỷ",
+          "million",
+          "billion"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "AAPL FY2024/FY2025, dòng Services trong bảng net sales."
+    },
+    {
+      "id": "direct_02",
+      "category": "truy_xuat_truc_tiep",
+      "difficulty": "easy",
+      "question": "Microsoft Cloud đạt doanh thu bao nhiêu trong FY2024 và tăng bao nhiêu phần trăm?",
+      "request": {
+        "query": "Microsoft Cloud đạt doanh thu bao nhiêu trong FY2024 và tăng bao nhiêu phần trăm?",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "MSFT"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "137,4 tỷ USD, tăng 23% so với FY2023.",
+      "answer_signals": [
+        [
+          "137,4",
+          "137.4"
+        ],
+        [
+          "23%",
+          "23 %"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "MSFT FY2024 10-K, fiscal-year highlights."
+    },
+    {
+      "id": "direct_03",
+      "category": "truy_xuat_bang",
+      "difficulty": "easy",
+      "question": "Biên lợi nhuận gộp của NVIDIA trong FY2024 là bao nhiêu?",
+      "request": {
+        "query": "Biên lợi nhuận gộp của NVIDIA trong FY2024 là bao nhiêu?",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "NVDA"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "72,7%.",
+      "answer_signals": [
+        [
+          "72,7",
+          "72.7"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "NVDA FY2024/FY2025, Fiscal Year Summary."
+    },
+    {
+      "id": "direct_04",
+      "category": "truy_xuat_bang",
+      "difficulty": "medium",
+      "question": "NVIDIA đã chi bao nhiêu cho capital expenditures trong FY2025 và FY2024?",
+      "request": {
+        "query": "NVIDIA đã chi bao nhiêu cho capital expenditures trong FY2025 và FY2024?",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "NVDA"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "FY2025: 3,4 tỷ USD; FY2024: 1,1 tỷ USD.",
+      "answer_signals": [
+        [
+          "3,4",
+          "3.4"
+        ],
+        [
+          "1,1",
+          "1.1"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "NVDA FY2025 10-K, liquidity/capital resources."
+    },
+    {
+      "id": "direct_05",
+      "category": "truy_xuat_nghia_vu",
+      "difficulty": "medium",
+      "question": "Tại ngày 26/01/2025, remaining performance obligations trên các hợp đồng dài hơn một năm của NVIDIA là bao nhiêu và tỷ lệ dự kiến ghi nhận trong 12 tháng tới là bao nhiêu?",
+      "request": {
+        "query": "Tại ngày 26/01/2025, remaining performance obligations trên các hợp đồng dài hơn một năm của NVIDIA là bao nhiêu và tỷ lệ dự kiến ghi nhận trong 12 tháng tới là bao nhiêu?",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "NVDA"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "1,7 tỷ USD; khoảng 39% dự kiến được ghi nhận trong 12 tháng tiếp theo.",
+      "answer_signals": [
+        [
+          "1,7",
+          "1.7"
+        ],
+        [
+          "39%",
+          "39 %"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "NVDA FY2025 chunk về remaining performance obligations."
+    },
+    {
+      "id": "direct_06",
+      "category": "truy_xuat_nghia_vu",
+      "difficulty": "medium",
+      "question": "Remaining performance obligations của Microsoft tại 30/06/2025 là bao nhiêu, phần thương mại là bao nhiêu và khoảng bao nhiêu phần trăm dự kiến ghi nhận trong 12 tháng?",
+      "request": {
+        "query": "Remaining performance obligations của Microsoft tại 30/06/2025 là bao nhiêu, phần thương mại là bao nhiêu và khoảng bao nhiêu phần trăm dự kiến ghi nhận trong 12 tháng?",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "MSFT"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "Tổng RPO 375 tỷ USD, trong đó 368 tỷ USD thuộc phần thương mại; khoảng 40% dự kiến ghi nhận trong 12 tháng.",
+      "answer_signals": [
+        [
+          "375"
+        ],
+        [
+          "368"
+        ],
+        [
+          "40%",
+          "40 %"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "MSFT FY2025 10-K, Note on unearned revenue/RPO."
+    },
+    {
+      "id": "direct_07",
+      "category": "truy_xuat_theo_khu_vuc",
+      "difficulty": "hard",
+      "question": "Liệt kê doanh thu NVIDIA FY2024 theo khu vực Hoa Kỳ, Đài Loan, Trung Quốc (gồm Hồng Kông) và các quốc gia khác.",
+      "request": {
+        "query": "Liệt kê doanh thu NVIDIA FY2024 theo khu vực Hoa Kỳ, Đài Loan, Trung Quốc (gồm Hồng Kông) và các quốc gia khác.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "NVDA"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "Hoa Kỳ 26,966 triệu USD; Đài Loan 13,405 triệu USD; Trung Quốc (gồm Hồng Kông) 10,306 triệu USD; các quốc gia khác 10,245 triệu USD.",
+      "answer_signals": [
+        [
+          "26.966",
+          "26,966"
+        ],
+        [
+          "13.405",
+          "13,405"
+        ],
+        [
+          "10.306",
+          "10,306"
+        ],
+        [
+          "10.245",
+          "10,245"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "NVDA FY2024 geographic revenue table."
+    },
+    {
+      "id": "calc_01",
+      "category": "tinh_toan_duoc_ho_tro",
+      "difficulty": "medium",
+      "question": "Tính tốc độ tăng trưởng tổng doanh thu Apple từ FY2023 đến FY2024.",
+      "request": {
+        "query": "Tính tốc độ tăng trưởng tổng doanh thu Apple từ FY2023 đến FY2024.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "AAPL"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "Khoảng 2,02% = (391,035 - 383,285) / 383,285 x 100, với đơn vị triệu USD.",
+      "answer_signals": [
+        [
+          "2,02%",
+          "2.02%"
+        ],
+        [
+          "391.035",
+          "391,035"
+        ],
+        [
+          "383.285",
+          "383,285"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "Deterministic revenue-growth path."
+    },
+    {
+      "id": "calc_02",
+      "category": "tinh_toan_duoc_ho_tro",
+      "difficulty": "medium",
+      "question": "Tính tốc độ tăng trưởng doanh thu Microsoft từ FY2023 đến FY2024.",
+      "request": {
+        "query": "Tính tốc độ tăng trưởng doanh thu Microsoft từ FY2023 đến FY2024.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "MSFT"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "Khoảng 15,67% = (245,122 - 211,915) / 211,915 x 100, với đơn vị triệu USD.",
+      "answer_signals": [
+        [
+          "15,67%",
+          "15.67%"
+        ],
+        [
+          "245.122",
+          "245,122"
+        ],
+        [
+          "211.915",
+          "211,915"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "Deterministic revenue-growth path."
+    },
+    {
+      "id": "calc_03",
+      "category": "tinh_toan_duoc_ho_tro",
+      "difficulty": "hard",
+      "question": "Tính tốc độ tăng trưởng doanh thu NVIDIA từ FY2024 đến FY2025.",
+      "request": {
+        "query": "Tính tốc độ tăng trưởng doanh thu NVIDIA từ FY2024 đến FY2025.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "NVDA"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "Khoảng 114,20% = (130,497 - 60,922) / 60,922 x 100, với đơn vị triệu USD.",
+      "answer_signals": [
+        [
+          "114,20%",
+          "114.20%",
+          "114,2%",
+          "114.2%"
+        ],
+        [
+          "130.497",
+          "130,497"
+        ],
+        [
+          "60.922",
+          "60,922"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "Deterministic revenue-growth path."
+    },
+    {
+      "id": "calc_04",
+      "category": "tinh_toan_duoc_ho_tro",
+      "difficulty": "hard",
+      "question": "Tính tổng doanh thu của Apple và Microsoft trong FY2024.",
+      "request": {
+        "query": "Tính tổng doanh thu của Apple và Microsoft trong FY2024.",
+        "top_k": 20,
+        "language": "vi",
+        "tickers": [
+          "AAPL",
+          "MSFT"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "636,157 triệu USD = 391,035 + 245,122 triệu USD.",
+      "answer_signals": [
+        [
+          "636.157",
+          "636,157"
+        ],
+        [
+          "391.035",
+          "391,035"
+        ],
+        [
+          "245.122",
+          "245,122"
+        ]
+      ],
+      "min_citations": 2,
+      "evidence_hint": "Deterministic combined-revenue path; needs both companies in retrieval context."
+    },
+    {
+      "id": "calc_05",
+      "category": "tinh_toan_ngoai_luong_deterministic",
+      "difficulty": "hard",
+      "question": "Dựa trên doanh thu 57.006 triệu USD và lợi nhuận ròng 31.910 triệu USD, tính biên lợi nhuận ròng của NVIDIA trong ba tháng kết thúc ngày 26/10/2025.",
+      "request": {
+        "query": "Dựa trên tài liệu, tính biên lợi nhuận ròng của NVIDIA trong ba tháng kết thúc ngày 26/10/2025 bằng lợi nhuận ròng chia doanh thu.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "NVDA"
+        ],
+        "form_types": [
+          "10-Q"
+        ]
+      },
+      "expected_statuses": [
+        "answered",
+        "insufficient_context"
+      ],
+      "expected_answer": "Nếu hệ thống cho phép phép tính ngoài deterministic path: khoảng 55,98% = 31.910 / 57.006 × 100. Nếu tuân thủ giới hạn không tự tính, phải trả insufficient_context.",
+      "answer_signals_if_answered": [
+        [
+          "55,98",
+          "55.98"
+        ],
+        [
+          "31.910",
+          "31,910"
+        ],
+        [
+          "57.006",
+          "57,006"
+        ]
+      ],
+      "min_citations_if_answered": 1,
+      "evidence_hint": "Boundary test for unsupported calculation behavior."
+    },
+    {
+      "id": "calc_06",
+      "category": "tinh_toan_ngoai_luong_deterministic",
+      "difficulty": "hard",
+      "question": "Ước tính phần RPO của NVIDIA tại 26/01/2025 dự kiến được ghi nhận trong 12 tháng tới.",
+      "request": {
+        "query": "Từ RPO 1,7 tỷ USD và tỷ lệ khoảng 39%, hãy tính số tiền dự kiến NVIDIA ghi nhận trong 12 tháng tới.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "NVDA"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered",
+        "insufficient_context"
+      ],
+      "expected_answer": "Nếu được phép tính: khoảng 0,663 tỷ USD, tức 663 triệu USD. Nếu không, trả insufficient_context.",
+      "answer_signals_if_answered": [
+        [
+          "0,663",
+          "0.663",
+          "663"
+        ],
+        [
+          "39%",
+          "39 %"
+        ]
+      ],
+      "min_citations_if_answered": 1,
+      "evidence_hint": "Boundary test for derived calculation."
+    },
+    {
+      "id": "compare_01",
+      "category": "so_sanh_nam",
+      "difficulty": "medium",
+      "question": "So sánh doanh thu NVIDIA FY2025 với FY2024: chênh lệch tuyệt đối và tốc độ tăng trưởng là bao nhiêu?",
+      "request": {
+        "query": "So sánh doanh thu NVIDIA FY2025 với FY2024; nêu số liệu từng năm, chênh lệch tuyệt đối và tốc độ tăng trưởng nếu tài liệu cung cấp.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "NVDA"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "FY2025 130,497 triệu USD so với FY2024 60,922 triệu USD; tăng 69,575 triệu USD, tương đương khoảng 114%.",
+      "answer_signals": [
+        [
+          "130.497",
+          "130,497"
+        ],
+        [
+          "60.922",
+          "60,922"
+        ],
+        [
+          "114%",
+          "114 %"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "NVDA FY2025 fiscal-year summary explicitly reports Up 114%."
+    },
+    {
+      "id": "compare_02",
+      "category": "so_sanh_dong_san_pham",
+      "difficulty": "medium",
+      "question": "So sánh doanh thu Services của Apple giữa FY2023 và FY2024.",
+      "request": {
+        "query": "So sánh doanh thu Services của Apple giữa FY2023 và FY2024 và nêu mức tăng được báo cáo.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "AAPL"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "FY2024 là 96,169 triệu USD so với 85,200 triệu USD FY2023; tăng 10,969 triệu USD, khoảng 13% theo báo cáo.",
+      "answer_signals": [
+        [
+          "96.169",
+          "96,169"
+        ],
+        [
+          "85.200",
+          "85,200"
+        ],
+        [
+          "13%",
+          "13 %"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "AAPL Services net-sales table."
+    },
+    {
+      "id": "compare_03",
+      "category": "so_sanh_bang_can_doi",
+      "difficulty": "hard",
+      "question": "Tổng tài sản NVIDIA cuối FY2025 thay đổi thế nào so với cuối FY2024?",
+      "request": {
+        "query": "Tổng tài sản NVIDIA cuối FY2025 thay đổi thế nào so với cuối FY2024? Nêu số liệu hai kỳ và kết luận xu hướng.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "NVDA"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "Tăng từ 65,728 triệu USD lên 111,601 triệu USD, tăng 45,873 triệu USD (khoảng 69,8%).",
+      "answer_signals": [
+        [
+          "111.601",
+          "111,601"
+        ],
+        [
+          "65.728",
+          "65,728"
+        ],
+        [
+          "tăng",
+          "increase"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "NVDA FY2025 balance sheet."
+    },
+    {
+      "id": "compare_04",
+      "category": "so_sanh_cloud",
+      "difficulty": "medium",
+      "question": "Microsoft Cloud FY2025 tăng thế nào so với FY2024?",
+      "request": {
+        "query": "Microsoft Cloud FY2025 tăng thế nào so với FY2024? Nêu doanh thu hai năm và tỷ lệ tăng được báo cáo.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "MSFT"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "FY2025 168,9 tỷ USD so với FY2024 137,7 tỷ USD; tăng 23% theo báo cáo.",
+      "answer_signals": [
+        [
+          "168,9",
+          "168.9"
+        ],
+        [
+          "137,7",
+          "137.7"
+        ],
+        [
+          "23%",
+          "23 %"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "MSFT FY2025 10-K cloud highlights/table."
+    },
+    {
+      "id": "reason_01",
+      "category": "suy_luan_nguyen_nhan",
+      "difficulty": "hard",
+      "question": "Yếu tố kinh doanh nào là động lực chính khiến doanh thu NVIDIA tăng mạnh trong FY2025?",
+      "request": {
+        "query": "Dựa trên báo cáo FY2025, yếu tố kinh doanh nào là động lực chính khiến doanh thu NVIDIA tăng mạnh? Chỉ kết luận từ nguồn được truy hồi.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "NVDA"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "Động lực chính là Data Center/Compute & Networking nhờ nhu cầu nền tảng điện toán tăng tốc và AI, đặc biệt các hệ thống GPU/data center.",
+      "answer_signals": [
+        [
+          "Data Center",
+          "Compute & Networking",
+          "Compute and Networking"
+        ],
+        [
+          "AI",
+          "điện toán tăng tốc",
+          "accelerated computing"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "NVDA FY2025 MD&A and segment revenue."
+    },
+    {
+      "id": "reason_02",
+      "category": "suy_luan_rui_ro",
+      "difficulty": "hard",
+      "question": "Tóm tắt các mắt xích có thể làm NVIDIA không đáp ứng được nhu cầu khách hàng trong chuỗi cung ứng.",
+      "request": {
+        "query": "Tóm tắt các mắt xích có thể làm NVIDIA không đáp ứng được nhu cầu khách hàng trong chuỗi cung ứng. Nhóm theo nguồn cung, sản xuất/kiểm thử và logistics.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "NVDA"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "Rủi ro gồm thiếu wafer/linh kiện/công suất; nhà cung cấp hủy cam kết hoặc tăng giá; foundry/contract manufacturer thiếu nguyên liệu, năng lực sản xuất, assembly/test/packaging; lead time và logistics kéo dài; phụ thuộc nhà cung cấp bên thứ ba và chuyển đổi công nghệ/quy trình.",
+      "answer_signals": [
+        [
+          "wafer",
+          "linh kiện",
+          "component"
+        ],
+        [
+          "công suất",
+          "capacity"
+        ],
+        [
+          "foundry",
+          "nhà máy đúc"
+        ],
+        [
+          "logistics",
+          "lead time",
+          "thời gian giao"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "NVDA Item 1A supply-chain risks."
+    },
+    {
+      "id": "reason_03",
+      "category": "suy_luan_xu_huong",
+      "difficulty": "hard",
+      "question": "Tỷ trọng doanh thu NVIDIA ngoài Hoa Kỳ từ FY2023 đến FY2025 cho thấy xu hướng gì?",
+      "request": {
+        "query": "Tỷ trọng doanh thu NVIDIA ngoài Hoa Kỳ từ FY2023 đến FY2025 cho thấy xu hướng gì? Nêu đủ ba tỷ lệ và suy luận thận trọng.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "NVDA"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "Tỷ trọng ngoài Hoa Kỳ giảm từ 69% FY2023 xuống 56% FY2024 và 53% FY2025, cho thấy cơ cấu doanh thu dịch chuyển tương đối về phía khách hàng có địa chỉ thanh toán tại Hoa Kỳ; không nên đồng nhất billing location với nơi sử dụng cuối.",
+      "answer_signals": [
+        [
+          "69%",
+          "69 %"
+        ],
+        [
+          "56%",
+          "56 %"
+        ],
+        [
+          "53%",
+          "53 %"
+        ],
+        [
+          "giảm",
+          "decline"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "NVDA geographic revenue disclosure and billing-location caveat."
+    },
+    {
+      "id": "reason_04",
+      "category": "suy_luan_kenh_ban",
+      "difficulty": "medium",
+      "question": "Cơ cấu kênh phân phối Apple năm 2025 nghiêng về trực tiếp hay gián tiếp?",
+      "request": {
+        "query": "Cơ cấu kênh phân phối Apple năm 2025 nghiêng về trực tiếp hay gián tiếp? Nêu tỷ lệ và kết luận.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "AAPL"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "Nghiêng về kênh gián tiếp: 60% net sales qua kênh gián tiếp và 40% qua kênh trực tiếp, chênh 20 điểm phần trăm.",
+      "answer_signals": [
+        [
+          "60%",
+          "60 %"
+        ],
+        [
+          "40%",
+          "40 %"
+        ],
+        [
+          "gián tiếp",
+          "indirect"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "AAPL FY2025 business/distribution disclosure."
+    },
+    {
+      "id": "reason_05",
+      "category": "suy_luan_backlog",
+      "difficulty": "hard",
+      "question": "RPO 375 tỷ USD của Microsoft tại 30/06/2025 nói gì về thời điểm ghi nhận doanh thu tương lai?",
+      "request": {
+        "query": "RPO 375 tỷ USD của Microsoft tại 30/06/2025 nói gì về thời điểm ghi nhận doanh thu tương lai? Phân biệt số liệu công bố với suy luận.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "MSFT"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "answered"
+      ],
+      "expected_answer": "Đây là doanh thu đã phân bổ cho nghĩa vụ còn lại, gồm unearned revenue và khoản sẽ lập hóa đơn/ghi nhận trong tương lai. Microsoft dự kiến khoảng 40% được ghi nhận trong 12 tháng tới và phần còn lại sau đó; đây không phải toàn bộ doanh thu chắc chắn của một kỳ đơn lẻ.",
+      "answer_signals": [
+        [
+          "375"
+        ],
+        [
+          "40%",
+          "40 %"
+        ],
+        [
+          "12 tháng",
+          "12 months"
+        ],
+        [
+          "phần còn lại",
+          "remainder"
+        ]
+      ],
+      "min_citations": 1,
+      "evidence_hint": "MSFT FY2025 RPO note."
+    },
+    {
+      "id": "negative_01",
+      "category": "thieu_du_lieu",
+      "difficulty": "easy",
+      "question": "Doanh thu VinFast trong FY2024 là bao nhiêu?",
+      "request": {
+        "query": "Doanh thu VinFast trong FY2024 là bao nhiêu?",
+        "top_k": 10,
+        "language": "vi",
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "insufficient_context"
+      ],
+      "expected_answer": "Không đủ ngữ cảnh vì corpus không có filing VinFast.",
+      "answer_signals": [],
+      "min_citations": 0,
+      "evidence_hint": "Must not substitute another company or invent a number."
+    },
+    {
+      "id": "negative_02",
+      "category": "ngoai_pham_vi_thoi_gian",
+      "difficulty": "medium",
+      "question": "Tổng doanh thu Apple trong FY2019 là bao nhiêu?",
+      "request": {
+        "query": "Tổng doanh thu Apple trong FY2019 là bao nhiêu? Chỉ dùng tài liệu trong hệ thống.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "AAPL"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "insufficient_context"
+      ],
+      "expected_answer": "Không đủ ngữ cảnh; corpus Apple hiện có bắt đầu từ FY2023 và không được lấy con số FY2019 từ kiến thức ngoài.",
+      "answer_signals": [],
+      "min_citations": 0,
+      "evidence_hint": "Tests temporal false positives from performance charts mentioning 2019."
+    },
+    {
+      "id": "negative_03",
+      "category": "ngoai_corpus",
+      "difficulty": "medium",
+      "question": "So sánh doanh thu smartphone của Samsung và Apple trong FY2024.",
+      "request": {
+        "query": "So sánh doanh thu smartphone của Samsung và Apple trong FY2024.",
+        "top_k": 10,
+        "language": "vi",
+        "tickers": [
+          "AAPL"
+        ],
+        "form_types": [
+          "10-K"
+        ]
+      },
+      "expected_statuses": [
+        "insufficient_context"
+      ],
+      "expected_answer": "Không đủ ngữ cảnh vì corpus không có filing Samsung và không nên suy diễn số liệu đối thủ.",
+      "answer_signals": [],
+      "min_citations": 0,
+      "evidence_hint": "Must not answer a cross-company comparison with only Apple evidence."
+    }
+  ]
+}

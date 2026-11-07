@@ -185,6 +185,14 @@
           </div>
         </div>
 
+        <div class="flex items-center gap-2 border-b border-slate-200 dark:border-dark-borderSubtle pb-3" role="group" aria-label="Search mode">
+          <button id="mode-retrieval" type="button" onclick="setAnswerMode(false)" class="px-3 py-1.5 rounded-md bg-brand-500 text-black font-semibold text-xs">Retrieval</button>
+          <button id="mode-ask" type="button" onclick="setAnswerMode(true)" class="px-3 py-1.5 rounded-md bg-slate-100 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 font-semibold text-xs">Hỏi đáp AI</button>
+          <label id="answer-language-wrap" class="hidden ml-auto text-xs text-slate-600 dark:text-zinc-400">Ngôn ngữ
+            <select id="answer-language" class="ml-2 px-2 py-1.5 border rounded bg-white dark:bg-black"><option value="vi">Tiếng Việt</option><option value="en">English</option></select>
+          </label>
+        </div>
+
         <!-- Single Method Selection Pills -->
         <div id="single-method-container" class="flex flex-wrap gap-2">
           <button onclick="selectMethod('rerank')" data-method="rerank" class="method-btn px-4 py-2 rounded-lg text-xs font-bold bg-brand-500 text-black shadow-md shadow-brand-500/20 flex items-center space-x-1.5">
@@ -348,7 +356,17 @@
           </div>
         </div>
 
-        <!-- Single Method Results Container -->
+        <section id="ask-results" class="hidden space-y-4" aria-live="polite">
+        <div id="ask-error" class="hidden p-4 border border-red-300 text-red-800 dark:text-red-200" role="alert"></div>
+        <div id="ask-answer" class="hidden p-5 border border-emerald-500/40 bg-white dark:bg-dark-card rounded-lg">
+          <h3 class="text-sm font-bold mb-3">Câu trả lời</h3>
+          <p id="ask-answer-text" class="text-sm leading-7 whitespace-pre-wrap"></p>
+          <div id="ask-citations" class="mt-5 pt-4 border-t border-slate-200 dark:border-dark-border space-y-2"></div>
+          <p id="ask-meta" class="mt-3 text-xs text-slate-500"></p>
+        </div>
+      </section>
+
+      <!-- Single Method Results Container -->
         <div id="single-results-list" class="hidden space-y-3">
           <!-- Dynamically filled with search result cards -->
         </div>
@@ -839,6 +857,7 @@
     const API_BASE = window.location.origin.includes('http') ? window.location.origin : 'http://127.0.0.1:8000';
     let currentMethod = 'rerank';
     let currentMode = 'single';
+    let answerMode = false;
     let availableTickers = [];
     let selectedTickers = [];
 
@@ -1267,6 +1286,17 @@
       lucide.createIcons();
     }
 
+    function setAnswerMode(enabled) {
+      answerMode = enabled;
+      document.getElementById('mode-retrieval').className = enabled ? 'px-3 py-1.5 rounded-md bg-slate-100 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 font-semibold text-xs' : 'px-3 py-1.5 rounded-md bg-brand-500 text-black font-semibold text-xs';
+      document.getElementById('mode-ask').className = enabled ? 'px-3 py-1.5 rounded-md bg-brand-500 text-black font-semibold text-xs' : 'px-3 py-1.5 rounded-md bg-slate-100 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 font-semibold text-xs';
+      document.getElementById('answer-language-wrap').classList.toggle('hidden', !enabled);
+      document.getElementById('single-method-container').classList.toggle('hidden', enabled || currentMode === 'compare_all');
+      document.getElementById('mode-single').disabled = enabled;
+      document.getElementById('mode-compare').disabled = enabled;
+      document.getElementById('btn-search').querySelector('span').textContent = enabled ? 'Hỏi' : 'Execute';
+    }
+
     function toggleFilters() {
       const container = document.getElementById('filters-container');
       const chevron = document.getElementById('filter-chevron');
@@ -1360,6 +1390,9 @@
       document.getElementById('direct-answer-card').classList.add('hidden');
       document.getElementById('single-results-list').classList.add('hidden');
       document.getElementById('compare-results-grid').classList.add('hidden');
+      document.getElementById('ask-results').classList.toggle('hidden', !answerMode);
+      document.getElementById('ask-answer').classList.add('hidden');
+      document.getElementById('ask-error').classList.add('hidden');
 
       const payload = {
         query: query,
@@ -1372,6 +1405,10 @@
       };
 
       try {
+        if (answerMode) {
+          await triggerAsk(query, topk, formTypes, dateStart, dateEnd);
+          return;
+        }
         const res = await fetch(`${API_BASE}/api/search`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1394,6 +1431,48 @@
       } catch (err) {
         document.getElementById('loading-state').classList.add('hidden');
         alert(`Search error: ${err.message}. Please verify the local server is running at ${API_BASE}.`);
+      }
+    }
+
+    async function triggerAsk(query, topk, formTypes, dateStart, dateEnd) {
+      const button = document.getElementById('btn-search');
+      button.disabled = true;
+      try {
+        const response = await fetch(`${API_BASE}/api/ask`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            query, top_k: Math.min(topk, 20), language: document.getElementById('answer-language').value,
+            tickers: selectedTickers.length ? selectedTickers : null,
+            form_types: formTypes.length ? formTypes : null,
+            filing_date_start: dateStart, filing_date_end: dateEnd
+          })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error?.message || `API error: ${data.error?.code || response.status}`);
+        document.getElementById('ask-answer').classList.remove('hidden');
+        document.getElementById('ask-answer-text').textContent = data.answer || '';
+        const citations = document.getElementById('ask-citations');
+        citations.replaceChildren();
+        data.citations.forEach(source => {
+          const item = document.createElement('div');
+          item.className = 'text-xs text-slate-700 dark:text-zinc-300';
+          const label = document.createElement('span');
+          label.textContent = `[${source.source_id}] ${source.company} (${source.ticker}) · ${source.fiscal_period || 'N/A'} · ${source.section || 'N/A'}`;
+          item.appendChild(label);
+          if (source.source_url && /^https?:\/\//i.test(source.source_url)) {
+            const link = document.createElement('a');
+            link.href = source.source_url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+            link.textContent = ' Mở filing'; link.className = 'ml-2 text-brand-600 underline'; item.appendChild(link);
+          }
+          citations.appendChild(item);
+        });
+        document.getElementById('ask-meta').textContent = `Nguồn: ${data.retrieval.context_count}; thời gian ${data.timings_ms.total} ms`;
+      } catch (error) {
+        const box = document.getElementById('ask-error');
+        box.textContent = error.message; box.classList.remove('hidden');
+      } finally {
+        button.disabled = false;
+        document.getElementById('loading-state').classList.add('hidden');
       }
     }
 

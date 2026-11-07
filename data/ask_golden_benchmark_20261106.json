@@ -1,0 +1,286 @@
+{
+  "summary": {
+    "total": 25,
+    "http_200": 15,
+    "answered": 8,
+    "insufficient_context": 7,
+    "blocked": 0,
+    "errors": 10,
+    "error_codes": {
+      "generation_invalid_output": 9,
+      "generation_rate_limited": 1
+    },
+    "result_statuses": {
+      "insufficient_context": 7,
+      "answered": 8
+    },
+    "latency_ms": {
+      "mean": 1692.0,
+      "min": 1095.8,
+      "max": 3880.0
+    }
+  },
+  "results": [
+    {
+      "id": "exact_01",
+      "category": "exact_terminology",
+      "query_length": 66,
+      "http_status": 200,
+      "latency_ms": 1174.7,
+      "result_status": "insufficient_context",
+      "context_count": 3,
+      "retrieved_count": 5,
+      "citation_count": 0,
+      "generation_model": "gemini-3.1-flash-lite"
+    },
+    {
+      "id": "exact_02",
+      "category": "exact_terminology",
+      "query_length": 56,
+      "http_status": 502,
+      "latency_ms": 1615.8,
+      "error_code": "generation_invalid_output"
+    },
+    {
+      "id": "exact_03",
+      "category": "exact_terminology",
+      "query_length": 57,
+      "http_status": 502,
+      "latency_ms": 1788.0,
+      "error_code": "generation_invalid_output"
+    },
+    {
+      "id": "exact_04",
+      "category": "exact_terminology",
+      "query_length": 58,
+      "http_status": 502,
+      "latency_ms": 1710.3,
+      "error_code": "generation_invalid_output"
+    },
+    {
+      "id": "exact_05",
+      "category": "exact_terminology",
+      "query_length": 50,
+      "http_status": 200,
+      "latency_ms": 1302.4,
+      "result_status": "insufficient_context",
+      "context_count": 3,
+      "retrieved_count": 5,
+      "citation_count": 0,
+      "generation_model": "gemini-3.1-flash-lite"
+    },
+    {
+      "id": "semantic_01",
+      "category": "semantic_questions",
+      "query_length": 116,
+      "http_status": 200,
+      "latency_ms": 1541.4,
+      "result_status": "insufficient_context",
+      "context_count": 3,
+      "retrieved_count": 5,
+      "citation_count": 0,
+      "generation_model": "gemini-3.1-flash-lite"
+    },
+    {
+      "id": "semantic_02",
+      "category": "semantic_questions",
+      "query_length": 89,
+      "http_status": 200,
+      "latency_ms": 1813.6,
+      "result_status": "answered",
+      "context_count": 3,
+      "retrieved_count": 5,
+      "citation_count": 2,
+      "generation_model": "gemini-3.1-flash-lite"
+    },
+    {
+      "id": "semantic_03",
+      "category": "semantic_questions",
+      "query_length": 82,
+      "http_status": 502,
+      "latency_ms": 1389.8,
+      "error_code": "generation_invalid_output"
+    },
+    {
+      "id": "semantic_04",
+      "category": "semantic_questions",
+      "query_length": 82,
+      "http_status": 200,
+      "latency_ms": 1583.6,
+      "result_status": "answered",
+      "context_count": 3,
+      "retrieved_count": 5,
+      "citation_count": 1,
+      "generation_model": "gemini-3.1-flash-lite"
+    },
+    {
+      "id": "semantic_05",
+      "category": "semantic_questions",
+      "query_length": 80,
+      "http_status": 200,
+      "latency_ms": 1697.2,
+      "result_status": "answered",
+      "context_count": 3,
+      "retrieved_count": 5,
+      "citation_count": 3,
+      "generation_model": "gemini-3.1-flash-lite"
+    },
+    {
+      "id": "mixed_01",
+      "category": "mixed_queries",
+      "query_length": 85,
+      "http_status": 502,
+      "latency_ms": 1766.4,
+      "error_code": "generation_invalid_output"
+    },
+    {
+      "id": "mixed_02",
+      "category": "mixed_queries",
+      "query_length": 67,
+      "http_status": 200,
+      "latency_ms": 1560.8,
+      "result_status": "answered",
+      "context_count": 3,
+      "retrieved_count": 5,
+      "citation_count": 1,
+      "generation_model": "gemini-3.1-flash-lite"
+    },
+    {
+      "id": "mixed_03",
+      "category": "mixed_queries",
+      "query_length": 77,
+      "http_status": 502,
+      "latency_ms": 1532.3,
+      "error_code": "generation_invalid_output"
+    },
+    {
+      "id": "mixed_04",
+      "category": "mixed_queries",
+      "query_length": 67,
+      "http_status": 200,
+      "latency_ms": 1342.3,
+      "result_status": "insufficient_context",
+      "context_count": 3,
+      "retrieved_count": 5,
+      "citation_count": 0,
+      "generation_model": "gemini-3.1-flash-lite"
+    },
+    {
+      "id": "mixed_05",
+      "category": "mixed_queries",
+      "query_length": 65,
+      "http_status": 200,
+      "latency_ms": 2131.9,
+      "result_status": "insufficient_context",
+      "context_count": 3,
+      "retrieved_count": 5,
+      "citation_count": 0,
+      "generation_model": "gemini-3.1-flash-lite"
+    },
+    {
+      "id": "rare_01",
+      "category": "rare_terminology",
+      "query_length": 80,
+      "http_status": 502,
+      "latency_ms": 1773.7,
+      "error_code": "generation_invalid_output"
+    },
+    {
+      "id": "rare_02",
+      "category": "rare_terminology",
+      "query_length": 52,
+      "http_status": 503,
+      "latency_ms": 2653.0,
+      "error_code": "generation_rate_limited"
+    },
+    {
+      "id": "rare_03",
+      "category": "rare_terminology",
+      "query_length": 53,
+      "http_status": 200,
+      "latency_ms": 1095.8,
+      "result_status": "insufficient_context",
+      "context_count": 3,
+      "retrieved_count": 5,
+      "citation_count": 0,
+      "generation_model": "gemini-3.1-flash-lite"
+    },
+    {
+      "id": "rare_04",
+      "category": "rare_terminology",
+      "query_length": 71,
+      "http_status": 502,
+      "latency_ms": 3880.0,
+      "error_code": "generation_invalid_output"
+    },
+    {
+      "id": "rare_05",
+      "category": "rare_terminology",
+      "query_length": 57,
+      "http_status": 502,
+      "latency_ms": 1415.4,
+      "error_code": "generation_invalid_output"
+    },
+    {
+      "id": "long_01",
+      "category": "long_natural_language",
+      "query_length": 158,
+      "http_status": 200,
+      "latency_ms": 1677.9,
+      "result_status": "answered",
+      "context_count": 3,
+      "retrieved_count": 5,
+      "citation_count": 3,
+      "generation_model": "gemini-3.1-flash-lite"
+    },
+    {
+      "id": "long_02",
+      "category": "long_natural_language",
+      "query_length": 116,
+      "http_status": 200,
+      "latency_ms": 1441.5,
+      "result_status": "answered",
+      "context_count": 3,
+      "retrieved_count": 5,
+      "citation_count": 2,
+      "generation_model": "gemini-3.1-flash-lite"
+    },
+    {
+      "id": "long_03",
+      "category": "long_natural_language",
+      "query_length": 160,
+      "http_status": 200,
+      "latency_ms": 1382.4,
+      "result_status": "answered",
+      "context_count": 3,
+      "retrieved_count": 5,
+      "citation_count": 2,
+      "generation_model": "gemini-3.1-flash-lite"
+    },
+    {
+      "id": "long_04",
+      "category": "long_natural_language",
+      "query_length": 144,
+      "http_status": 200,
+      "latency_ms": 1251.6,
+      "result_status": "insufficient_context",
+      "context_count": 3,
+      "retrieved_count": 5,
+      "citation_count": 0,
+      "generation_model": "gemini-3.1-flash-lite"
+    },
+    {
+      "id": "long_05",
+      "category": "long_natural_language",
+      "query_length": 128,
+      "http_status": 200,
+      "latency_ms": 1778.9,
+      "result_status": "answered",
+      "context_count": 3,
+      "retrieved_count": 5,
+      "citation_count": 3,
+      "generation_model": "gemini-3.1-flash-lite"
+    }
+  ],
+  "note": "Operational ask benchmark over golden_dataset.yaml. Does not judge semantic answer correctness; no answer text or API secret stored."
+}
